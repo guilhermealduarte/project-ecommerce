@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.guilhermeduarte.projectecommerce.dto.CategoryDTO;
 import com.guilhermeduarte.projectecommerce.dto.ProductDTO;
+import com.guilhermeduarte.projectecommerce.dto.ProductMinDTO;
 import com.guilhermeduarte.projectecommerce.entities.Category;
 import com.guilhermeduarte.projectecommerce.entities.Product;
 import com.guilhermeduarte.projectecommerce.repositories.CategoryRepository;
@@ -29,10 +30,10 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAll(String name, Pageable pageable) {
+	public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
 		Page<Product> list = repository.searchByName(name, pageable);
 		
-		return list.map(x -> new ProductDTO(x));
+		return list.map(x -> new ProductMinDTO(x));
 	}
 	
 	@Transactional(readOnly = true)
