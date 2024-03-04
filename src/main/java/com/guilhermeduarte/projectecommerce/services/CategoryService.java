@@ -4,72 +4,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.guilhermeduarte.projectecommerce.dto.CategoryDTO;
-import com.guilhermeduarte.projectecommerce.dto.ProductDTO;
-import com.guilhermeduarte.projectecommerce.dto.ProductMinDTO;
 import com.guilhermeduarte.projectecommerce.entities.Category;
-import com.guilhermeduarte.projectecommerce.entities.Product;
 import com.guilhermeduarte.projectecommerce.repositories.CategoryRepository;
-import com.guilhermeduarte.projectecommerce.repositories.ProductRepository;
 import com.guilhermeduarte.projectecommerce.services.exceptions.DatabaseException;
 import com.guilhermeduarte.projectecommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class ProductService {
+public class CategoryService {
 	
 	@Autowired
-	private ProductRepository repository;
-	
-	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryRepository repository;
 	
 	@Transactional(readOnly = true)
-	public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
-		Page<Product> list = repository.searchByName(name, pageable);
+	public Page<CategoryDTO> findAll(@NonNull Pageable pageable) {
+		Page<Category> list = repository.findAll(pageable);
 		
-		return list.map(x -> new ProductMinDTO(x));
+		return list.map(x -> new CategoryDTO(x));
 	}
 	
 	@Transactional(readOnly = true)
-	public ProductDTO findById(Long id) {	
-		Product entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+	public CategoryDTO findById(@NonNull Long id) {
+		Category entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
 		
-		ProductDTO dto = new ProductDTO(entity);
+		CategoryDTO dto = new CategoryDTO(entity);
 		
 		return dto;
 	}
 	
 	@Transactional
-	public ProductDTO insert(ProductDTO dto) {	
+	public CategoryDTO insert(CategoryDTO dto) {	
 		
-		Product entity = new Product();
+		Category entity = new Category();
 		
 		copyDTOToEntity(dto, entity);
-				
+		
 		entity = repository.save(entity);
 		
-		ProductDTO newDTO = new ProductDTO(entity);
+		CategoryDTO newDTO = new CategoryDTO(entity);
 		
 		return newDTO;
 	}
 	
 	@Transactional
-	public ProductDTO update(Long id, ProductDTO dto) {	
-		
+	public CategoryDTO update(@NonNull Long id, CategoryDTO dto) {
 		try {
-			Product entity = repository.getReferenceById(id);
+			Category entity = repository.getReferenceById(id);
 			
 			copyDTOToEntity(dto, entity);
-						
+			
 			entity = repository.save(entity);
 			
-			ProductDTO newDTO = new ProductDTO(entity);
+			CategoryDTO newDTO = new CategoryDTO(entity);
 			
 			return newDTO;
 		}
@@ -79,7 +72,7 @@ public class ProductService {
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void delete(Long id) {	
+	public void delete(@NonNull Long id) {
 		if (!repository.existsById(id)) {
 			throw new ResourceNotFoundException("Recurso não encontrado");
 		}
@@ -92,17 +85,8 @@ public class ProductService {
 	    	throw new DatabaseException("Falha de integridade referencial");
 	   	}
 	}
-
-	private void copyDTOToEntity(ProductDTO dto, Product entity) {
+	
+	private void copyDTOToEntity(CategoryDTO dto, Category entity) {
 		entity.setName(dto.getName());
-		entity.setDescription(dto.getDescription());
-		entity.setPrice(dto.getPrice());
-		entity.setImageUrl(dto.getImageUrl());
-		
-		for(CategoryDTO catDTO : dto.getCategories()) {
-			Category cat = categoryRepository.getReferenceById(catDTO.getId());
-			cat.setId(catDTO.getId());
-			entity.getCategories().add(cat);
-		}
 	}
 }

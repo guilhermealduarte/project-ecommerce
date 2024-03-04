@@ -7,6 +7,7 @@ import com.guilhermeduarte.projectecommerce.entities.Category;
 import com.guilhermeduarte.projectecommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -27,6 +28,7 @@ public class ProductDTO {
 	
 	private String imageUrl;
 	
+	@NotEmpty
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
 	public ProductDTO(Long id, String name, String description, Double price, String imageUrl) {
