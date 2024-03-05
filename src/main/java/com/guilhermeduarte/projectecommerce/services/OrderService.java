@@ -38,6 +38,9 @@ public class OrderService {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private AuthService authService;
+	
 	@Transactional(readOnly = true)
 	public Page<OrderDTO> findAll(@NonNull Pageable pageable) {
 		Page<Order> list = repository.findAll(pageable);
@@ -48,7 +51,9 @@ public class OrderService {
 	@Transactional(readOnly = true)
 	public OrderDTO findById(@NonNull Long id) {
 		Order entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
-				
+		
+		authService.validateSelfOrAdmin(entity.getUser().getId());
+		
 		return new OrderDTO(entity);
 	}
 	
