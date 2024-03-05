@@ -1,10 +1,9 @@
 package com.guilhermeduarte.projectecommerce.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,8 +30,8 @@ public class CategoryController {
 	private CategoryService service;
 
 	@GetMapping()
-	public ResponseEntity<Page<CategoryDTO>> getAll(@NonNull Pageable pageable) {
-		Page<CategoryDTO> dto = service.findAll(pageable);
+	public ResponseEntity<List<CategoryDTO>> getAll() {
+		List<CategoryDTO> dto = service.findAll();
 		
 		return ResponseEntity.ok(dto);
 	}
