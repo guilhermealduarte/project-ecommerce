@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class ProductController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> getById(@PathVariable Long id) {
+	public ResponseEntity<ProductDTO> getById(@PathVariable @NonNull Long id) {
 		ProductDTO dto = service.findById(id);
 		
 		return ResponseEntity.ok(dto);
@@ -56,7 +57,7 @@ public class ProductController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> update(@PathVariable @NonNull Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 		
 		return ResponseEntity.ok(dto);
@@ -64,7 +65,7 @@ public class ProductController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> destroy(@PathVariable Long id) {
+	public ResponseEntity<Void> destroy(@PathVariable @NonNull Long id) {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();

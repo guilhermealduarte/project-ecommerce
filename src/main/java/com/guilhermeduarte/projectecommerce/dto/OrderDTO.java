@@ -2,12 +2,13 @@ package com.guilhermeduarte.projectecommerce.dto;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.guilhermeduarte.projectecommerce.entities.Order;
 import com.guilhermeduarte.projectecommerce.entities.OrderItem;
 import com.guilhermeduarte.projectecommerce.entities.OrderStatus;
+
+import jakarta.validation.constraints.NotEmpty;
 
 public class OrderDTO {
 	
@@ -21,6 +22,7 @@ public class OrderDTO {
 	
 	private PaymentDTO payment;
 	
+	@NotEmpty(message = "Deve ter ao menos um item")
 	private List<OrderItemDTO> items = new ArrayList<>();
 
 	public OrderDTO(Long id, Instant moment, OrderStatus status, UserMinDTO user, PaymentDTO payment) {

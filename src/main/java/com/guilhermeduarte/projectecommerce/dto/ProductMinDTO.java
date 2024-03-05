@@ -6,10 +6,6 @@ import java.util.List;
 import com.guilhermeduarte.projectecommerce.entities.Category;
 import com.guilhermeduarte.projectecommerce.entities.Product;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-
 public class ProductMinDTO {
 	
 	private Long id;

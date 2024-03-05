@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,14 +34,14 @@ public class UserService implements UserDetailsService{
 	private UserRepository repository;
 	
 	@Transactional(readOnly = true)
-	public Page<UserDTO> findAll(Pageable pageable) {
+	public Page<UserDTO> findAll(@NonNull Pageable pageable) {
 		Page<User> list = repository.findAll(pageable);
 		
 		return list.map(x -> new UserDTO(x));
 	}
 	
 	@Transactional(readOnly = true)
-	public UserDTO findById(Long id) {
+	public UserDTO findById(@NonNull Long id) {
 		User entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
 		
 		UserDTO dto = new UserDTO(entity);
@@ -63,7 +64,7 @@ public class UserService implements UserDetailsService{
 	}
 	
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(@NonNull Long id, UserDTO dto) {
 		try {
 			User entity = repository.getReferenceById(id);
 			
@@ -81,7 +82,7 @@ public class UserService implements UserDetailsService{
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void delete(Long id) {
+	public void delete(@NonNull Long id) {
 		if (!repository.existsById(id)) {
 			throw new ResourceNotFoundException("Recurso não encontrado");
 		}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping()
-	public ResponseEntity<Page<UserDTO>> getAll(Pageable pageable) {
+	public ResponseEntity<Page<UserDTO>> getAll(@NonNull Pageable pageable) {
 		Page<UserDTO> dto = service.findAll(pageable);
 		
 		return ResponseEntity.ok(dto);
@@ -39,7 +40,7 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> getById(@PathVariable Long id) {
+	public ResponseEntity<UserDTO> getById(@PathVariable @NonNull Long id) {
 		UserDTO dto = service.findById(id);
 		
 		return ResponseEntity.ok(dto);
@@ -56,7 +57,7 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
+	public ResponseEntity<UserDTO> update(@PathVariable @NonNull Long id, @Valid @RequestBody UserDTO dto) {
 		dto = service.update(id, dto);
 		
 		return ResponseEntity.ok(dto);
@@ -64,7 +65,7 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> destroy(@PathVariable Long id) {
+	public ResponseEntity<Void> destroy(@PathVariable @NonNull Long id) {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();

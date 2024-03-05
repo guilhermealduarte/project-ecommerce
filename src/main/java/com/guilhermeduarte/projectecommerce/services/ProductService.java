@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public ProductDTO findById(Long id) {	
+	public ProductDTO findById(@NonNull Long id) {	
 		Product entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
 		
 		ProductDTO dto = new ProductDTO(entity);
@@ -60,7 +61,7 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public ProductDTO update(Long id, ProductDTO dto) {	
+	public ProductDTO update(@NonNull Long id, ProductDTO dto) {	
 		
 		try {
 			Product entity = repository.getReferenceById(id);
@@ -79,7 +80,7 @@ public class ProductService {
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void delete(Long id) {	
+	public void delete(@NonNull Long id) {	
 		if (!repository.existsById(id)) {
 			throw new ResourceNotFoundException("Recurso não encontrado");
 		}
