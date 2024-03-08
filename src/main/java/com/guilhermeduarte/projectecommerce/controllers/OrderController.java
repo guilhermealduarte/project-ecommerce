@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.guilhermeduarte.projectecommerce.dto.OrderDTO;
+import com.guilhermeduarte.projectecommerce.dto.PaymentDTO;
 import com.guilhermeduarte.projectecommerce.services.OrderService;
 
 import jakarta.validation.Valid;
@@ -41,6 +42,14 @@ public class OrderController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(dto);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/{id}/payment")
+	public ResponseEntity<PaymentDTO> getPaymentById(@PathVariable @NonNull Long id) {
+		PaymentDTO dto = service.createPayment(id);
+		
+		return ResponseEntity.ok(dto);
 	}
 	
 }

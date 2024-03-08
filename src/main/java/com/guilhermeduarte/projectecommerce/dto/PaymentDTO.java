@@ -6,22 +6,22 @@ import com.guilhermeduarte.projectecommerce.entities.Payment;
 
 public class PaymentDTO {
 	
-	private Long id;
+	private Long orderId;
 	
 	private Instant moment;
-	
-	public PaymentDTO(Long id, Instant moment) {
-		this.id = id;
+
+	public PaymentDTO(Long orderId, Instant moment) {
+		this.orderId = orderId;
 		this.moment = moment;
 	}
 	
 	public PaymentDTO(Payment entity) {
-		id = entity.getId();
+		orderId = entity.getOrder().getId();
 		moment = entity.getMoment();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getOrderId() {
+		return orderId;
 	}
 
 	public Instant getMoment() {

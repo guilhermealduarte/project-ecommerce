@@ -31,11 +31,10 @@ public class Payment {
 		
 	}
 
-	public Payment(Long id, Instant moment, Order order) {
-		super();
-		this.id = id;
-		this.moment = moment;
+	public Payment(Order order, Instant moment) {
 		this.order = order;
+		this.moment = moment;
+		
 	}
 
 	public Long getId() {
