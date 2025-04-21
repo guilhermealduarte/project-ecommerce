@@ -1,9 +1,6 @@
 package com.guilhermeduarte.projectecommerce.entities;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +20,8 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	private UUID uuid;
 		
 	private String name;
 	
@@ -36,7 +35,7 @@ public class Product {
 	@ManyToMany
 	@JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	
@@ -44,9 +43,10 @@ public class Product {
 		
 	}
 
-	public Product(Long id, String name, String description, Double price, String imageUrl) {
+	public Product(Long id, UUID uuid, String name, String description, Double price, String imageUrl) {
 		super();
 		this.id = id;
+		this.uuid = uuid;
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -59,6 +59,14 @@ public class Product {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getName() {
@@ -97,10 +105,14 @@ public class Product {
 		return categories;
 	}
 
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
 	public Set<OrderItem> getItems() {
 		return items;
 	}
-	
+
 	public List<Order> getOrders(){
 		return items.stream().map(x -> x.getOrder()).toList();
 	}

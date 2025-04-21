@@ -73,12 +73,12 @@ public class OrderService {
 		User user = userService.authenticated();
 		order.setUser(user);
 		
-		for(OrderItemDTO itemDTO : dto.getItems()) {
-			Product product = productRepository.getReferenceById(itemDTO.getProductId());
-			
-			OrderItem item = new OrderItem(order, product, itemDTO.getQuantity(), product.getPrice());
-			order.getItems().add(item);
-		}
+//		for(OrderItemDTO itemDTO : dto.getItems()) {
+//			Product product = productRepository.getReferenceById(itemDTO.getProductId());
+//
+//			OrderItem item = new OrderItem(order, product, itemDTO.getQuantity(), product.getPrice());
+//			order.getItems().add(item);
+//		}
 		
 		repository.save(order);
 		orderItemRepository.saveAll(order.getItems());
