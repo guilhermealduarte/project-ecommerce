@@ -3,6 +3,7 @@ package com.guilhermeduarte.projectecommerce.entities;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +20,8 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private UUID Uuid;
+
 	private String name;
 	
 	@ManyToMany(mappedBy = "categories")
@@ -28,9 +31,10 @@ public class Category {
 
 	}
 
-	public Category(Long id, String name) {
+	public Category(Long id, UUID uuid, String name) {
 		super();
 		this.id = id;
+		this.Uuid = uuid;
 		this.name = name;
 	}
 
@@ -40,6 +44,14 @@ public class Category {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UUID getUuid() {
+		return Uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		Uuid = uuid;
 	}
 
 	public String getName() {
